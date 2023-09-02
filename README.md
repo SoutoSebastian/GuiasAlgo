@@ -1,0 +1,2 @@
+# GuiasAlgo
+Resolución de guías.
