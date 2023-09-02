@@ -279,3 +279,31 @@ g5 n | n `mod` 2 == 0 = (n `div` 2)
 
 todosMenores :: (Integer, Integer, Integer) -> Bool
 todosMenores (n1, n2, n3) = (f5 n1 > g5 n1) && (f5 n2 > g5 n2) && (f5 n3 > g5 n3)
+
+--------------EJ 6-------------------
+{--
+problema bisiesto (ano: Z) : Bool {
+requiere: {T rue}
+asegura: {res = f alse ↔ a˜no no es m´ultiplo de 4 o a˜no es m´ultiplo de 100 pero no de 400}
+}
+--}
+
+bisiesto :: Integer -> Bool
+bisiesto x | x `mod` 4 /= 0 || ( x `mod` 100 == 0 && x `mod` 400 /= 0) = False
+           | otherwise = True
+
+------------EJ 7 ---------------
+
+{--
+problema distanciaManhattan (p : R × R × R, q : R × R × R) : R {
+requiere: {T rue}
+asegura: {res =
+P2
+i=0 |pi − qi
+|}
+}
+--}
+
+--currificada
+distanciaManhattan :: Float -> Float -> Float -> Float -> Float -> Float -> Float
+distanciaManhattan a b c d e f = sqrt((a-d)^2) + sqrt((b-e)^2) + sqrt((c-f)^2)
