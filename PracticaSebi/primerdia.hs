@@ -312,3 +312,107 @@ distanciaManhattan1 :: (Float, Float, Float) -> (Float, Float, Float) -> Float
 distanciaManhattan1 (a, b, c) (d, e, f) = sqrt((a-d)^2) + sqrt((b-e)^2) + sqrt((c-f)^2)
 
 --hola
+
+---------------------EJ 8---------------------
+{--
+problema comparar (a:Z, b:Z) : Z {
+requiere: {T rue}
+asegura: {(res = 1 ↔ sumaU ltimosDosDigitos(a) < sumaU ltimosDosDigitos(b))}
+asegura: {(res = −1 ↔ sumaU ltimosDosDigitos(a) > sumaU ltimosDosDigitos(b))}
+asegura: {(res = 0 ↔ sumaU ltimosDosDigitos(a) = sumaU ltimosDosDigitos(b)))}
+}
+problema sumaUltimosDosDigitos (x: Z) : Z {
+requiere: {T rue}
+asegura: {res = (x mod 10) + ((x/10)c mod 10)}
+}
+--}
+
+sumaUltimosDosDigitos :: Integer -> Integer
+sumaUltimosDosDigitos x = mod x 10 + mod (div x 10) 10
+
+comparar :: Integer -> Integer -> Integer
+comparar a b | sumaUltimosDosDigitos a < sumaUltimosDosDigitos b = 1
+             | sumaUltimosDosDigitos a > sumaUltimosDosDigitos b = -1
+             | sumaUltimosDosDigitos a == sumaUltimosDosDigitos b = 0
+
+
+--------------------EJ 9 -------------------------
+
+--a
+{--
+si n es igual a 0 f1 devolvera 1 y si n es disinto de 0 f1 devuelve 0. 
+Por lo tanto f1 sirve para ver si n es igual a 0
+
+Especficación:
+
+problema f1 (n:R) :R {
+      requiere: {True}
+      asegura: {res = 0 si n es distinto de 0}
+      asegura: {res = 1 si n = 0}
+}
+--}
+
+--b
+
+{--
+f2 devolvera -15 si n es igual a -1 y devolvera 15 si n es igual a 1 
+
+Especificación:
+
+problema f2 (n:R) :R {
+      requiere: {n = 1 o n = -1}
+      asegura: {res = 15 si n=1}
+      asegura: {res = -15 si n=-1}
+}
+--}
+
+--c
+{--
+f3 devolvera 7 si n pertenece al intervalo (-inf,9] y devolvera 5 si n pertenece al intervalo [3, +inf)
+
+Especificación:
+
+problema f3 (n:R) :R {
+      requiere: {True}
+      asegura: {res sera 7 si n pertenece al intervalo (-inf,9]}
+      asegura: {res = 5 si n :: [3, +inf}
+      asegura: {res = 7 si n :: [3, 9]}
+}
+--}
+
+--d
+{--
+f4 devolvera el promedio de los dos numeros de entrada
+
+Especificacion:
+
+problema f4 (x:R,x:R) :R {
+      requiere: {True}
+      asegura:{res = (x + y)/2}
+}
+--}
+
+--e
+{--
+f5 devolvera el promedio entre los dos elemnetos de la dupla
+
+Especificacion:
+
+problema f5 (x:(R, R)) :R {
+      requiere: {True}
+      asegura: {res = (x0 + x1)/2 } (para acceder a los elementos de una tupla uso subindices)
+}
+--}
+
+--f
+{--
+f6 devuleve true si al truncar el primer elemento que le damos, el resultado es igual al segundo elemento que le damos
+
+problema f6 (x:R, x:Z) :Bool {
+      requiere: {True}
+      asegura: {res=true si truncate(a)=b}
+      asegura: {res=false si truncate(a)/=b}
+}
+--}
+f6 :: Float -> Int -> Bool
+f6 a b = truncate a == b
