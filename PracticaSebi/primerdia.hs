@@ -308,4 +308,7 @@ i=0 |pi − qi
 distanciaManhattan :: Float -> Float -> Float -> Float -> Float -> Float -> Float
 distanciaManhattan a b c d e f = sqrt((a-d)^2) + sqrt((b-e)^2) + sqrt((c-f)^2)
 
+distanciaManhattan1 :: (Float, Float, Float) -> (Float, Float, Float) -> Float
+distanciaManhattan1 (a, b, c) (d, e, f) = sqrt((a-d)^2) + sqrt((b-e)^2) + sqrt((c-f)^2)
+
 --hola
