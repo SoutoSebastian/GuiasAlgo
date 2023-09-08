@@ -148,7 +148,120 @@ sucesion12 n | n == 1 = 2
 raizDe2Aprox :: Integer -> Float
 raizDe2Aprox n = sucesion12 n - 1
 
+------------EJ 13--------------
+{--
+problema dobleSumatoria (n:N, m:N) :R {
+    requiere: {True}
+    asegura: {res = doble sumatoria de i=1 hasta n y de j=1 hasta m de i^j}
+}
+--}
 
+sumatoriaInterna :: Integer -> Integer -> Integer
+sumatoriaInterna _ 0 = 0
+sumatoriaInterna n m = n^m + sumatoriaInterna n (m-1)
 
+dobleSumatoria :: Integer -> Integer -> Integer
+dobleSumatoria 0 _ = 0
+dobleSumatoria n m = sumatoriaInterna n m + dobleSumatoria (n-1) m
 
+------------EJ 14----------------
+{--
+problema sumaPotencias (n:Z, q:N, m:N) :N {
+    requiere: {True}
+    asegura: {res = doble sumatoria de a=1 hasta n y de b=1 hasta m de q^(a+b)}
+}
+--}
+
+sumatoriaPotencias1 :: Integer -> Integer -> Integer -> Integer
+sumatoriaPotencias1 q n 1 = q^(n+1)
+sumatoriaPotencias1 q n m = q^(n+m) + sumatoriaPotencias1 q n (m-1)
+
+sumaPotencias :: Integer -> Integer -> Integer -> Integer
+sumaPotencias q 1 m = sumatoriaPotencias1 q 1 m
+sumaPotencias q n m = sumatoriaPotencias1 q n m + sumaPotencias q (n-1) m
+
+------------EJ 15---------------
+
+{--
+problema sumaRacionales (n : N, m : N) : R {
+requiere: { T rue}
+asegura: { resultado = doble sumatoria desde p=1 hasta n y q=1 hasta m de p/q}
+}
+--}
+
+sumaRacionales1 :: Integer -> Integer -> Float
+sumaRacionales1 n 1 = fromIntegral n 
+sumaRacionales1 n m = (fromIntegral n)/(fromIntegral m) + sumaRacionales1 n (m-1) 
+
+sumaRacionales :: Integer -> Integer -> Float
+sumaRacionales 1 m = sumaRacionales1 1 m 
+sumaRacionales n m = sumaRacionales1 n m + sumaRacionales (n-1) m 
+
+-----------EJ 16-------------
+
+--a
+menorDivisorDesde :: Integer -> Integer-> Integer
+menorDivisorDesde x y | x==y = y
+                      | x `mod` y == 0 = y
+                      |otherwise = menorDivisorDesde x (y+1)
+
+menorDivisor :: Integer -> Integer
+menorDivisor x = menorDivisorDesde x 2
+
+--b
+esPrimo :: Integer -> Bool
+esPrimo x = menorDivisor x == x
+
+--c
+sonCoprimosv1 :: Integer -> Integer -> Integer -> Bool
+sonCoprimosv1 x y z | z == 1 = True
+                    | x `mod` z == 0 && y `mod` z == 0 = False                    
+                    | otherwise = sonCoprimosv1 x y (z-1)
+
+sonCoprimos :: Integer -> Integer -> Bool
+sonCoprimos x y | x<=y = sonCoprimosv1 x y y
+                | x>y = sonCoprimosv1 x y x
+
+--d
+{--
+nEsimoPrimo :: Integer -> Integer 
+nEsimoPrimo 1 = 
+    no me sale
+--}
+
+-----------EJ 17----------
+{--
+problema esFibonacci (n: Z) : B {
+requiere: { n ≥ 0 }
+asegura: { resultado = true ↔ n es alg´un valor de la secuencia de Fibonacci definida en el ejercicio 1}
+}
+--}
+
+esFibonacciAux :: Integer -> Integer -> Bool
+esFibonacciAux _ (-1) = False
+esFibonacciAux x n | x == fibonacci n = True
+                   | otherwise = esFibonacciAux x (n-1)
+
+esFibonacci :: Integer -> Bool
+esFibonacci x = esFibonacciAux x 25
+
+-----------EJ 18-----------
+{--
+problema mayorDigitoPar (n: N) : N {
+requiere: { T rue }
+asegura: { resultado es el mayor de los d´ıgitos pares de n. Si n no tiene ning´un d´ıgito par, entonces resultado es -1.
+}
+}
+--}
+
+esPar :: Integer -> Bool
+esPar n = n `mod` 2 == 0
+
+mayorDigitoParAux :: Integer -> Integer -> Integer
+mayorDigitoParAux n y | n == 0 = y
+                      | esPar (ultimoDigito n) && ultimoDigito n > y = mayorDigitoParAux (sacarUltimoDigito n) (ultimoDigito n)
+                      | otherwise = mayorDigitoParAux (sacarUltimoDigito n) y
+
+mayorDigitoPar :: Integer -> Integer
+mayorDigitoPar n = mayorDigitoParAux n (-1)
 
