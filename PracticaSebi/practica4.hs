@@ -223,12 +223,16 @@ sonCoprimos x y | x<=y = sonCoprimosv1 x y y
                 | x>y = sonCoprimosv1 x y x
 
 --d
-{--
-nEsimoPrimo :: Integer -> Integer 
-nEsimoPrimo 1 = 
-    no me sale
---}
+quePrimoEs :: Integer -> Integer
+quePrimoEs 2 = 1
+quePrimoEs n | esPrimo n == True = 1 +quePrimoEs (n-1)
+             | otherwise = quePrimoEs (n-1)
 
+nEsimoPrimoAux :: Integer -> Integer -> Integer
+nEsimoPrimoAux n i | quePrimoEs n == i = n 
+                   |otherwise = nEsimoPrimoAux (n+1) i
+nEsimoPrimo :: Integer -> Integer
+nEsimoPrimo i = nEsimoPrimoAux 2 i
 -----------EJ 17----------
 {--
 problema esFibonacci (n: Z) : B {
