@@ -206,7 +206,8 @@ menorDivisorDesde x y | x==y = y
                       |otherwise = menorDivisorDesde x (y+1)
 
 menorDivisor :: Integer -> Integer
-menorDivisor x = menorDivisorDesde x 2
+menorDivisor x | x == 1 = 1
+               | otherwise = menorDivisorDesde x 2
 
 --b
 esPrimo :: Integer -> Bool
@@ -231,6 +232,7 @@ quePrimoEs n | esPrimo n == True = 1 +quePrimoEs (n-1)
 nEsimoPrimoAux :: Integer -> Integer -> Integer
 nEsimoPrimoAux n i | quePrimoEs n == i = n 
                    |otherwise = nEsimoPrimoAux (n+1) i
+
 nEsimoPrimo :: Integer -> Integer
 nEsimoPrimo i = nEsimoPrimoAux 2 i
 -----------EJ 17----------
@@ -247,7 +249,7 @@ esFibonacciAux x n | x == fibonacci n = True
                    | otherwise = esFibonacciAux x (n-1)
 
 esFibonacci :: Integer -> Bool
-esFibonacci x = esFibonacciAux x 25
+esFibonacci x = esFibonacciAux x 32
 
 -----------EJ 18-----------
 {--
@@ -280,18 +282,18 @@ asegura: { resultado = true ↔ n es igual a la suma de los m primeros n´umeros
 
 sumaDePrimosHasta :: Integer -> Integer 
 sumaDePrimosHasta x | x == 2 = 2 
-                    | esPrimo x == True = x + sumaDePrimosHasta (x-1)
+                    | esPrimo x = x + sumaDePrimosHasta (x-1)
                     | otherwise = sumaDePrimosHasta (x-1)
 
 
 esSumaInicialDePrimosAux :: Integer -> Integer -> Bool
-esSumaInicialDePrimosAux n m | n == sumaDePrimosHasta m = True
-                             | n > m = False
-                             | otherwise = esSumaInicialDePrimosAux n (m-1)
+esSumaInicialDePrimosAux n m | n < sumaDePrimosHasta m = False
+                             | n == sumaDePrimosHasta m = True
+                             | otherwise = esSumaInicialDePrimosAux n (m+1)
 
 esSumaInicialDePrimos :: Integer -> Bool
-esSumaInicialDePrimos n = esSumaInicialDePrimosAux n 461 --lo hago hasta 461, mas adelante comienza a trabarse
-                                                         -- sumaDePrimosHasta 461 = 18650
+esSumaInicialDePrimos n = esSumaInicialDePrimosAux n 2 
+
 
 ------------EJ 20----------
 
@@ -319,4 +321,18 @@ tomaValorMax :: Integer-> Integer -> Integer
 tomaValorMax n1 n2 = tomaValorMaxAux n1 n2 n1 (n1+1)
  
  ---------EJ 21----------
- 
+ {--
+ problema pitagoras (m:Z, n:Z, r:Z) :Z {
+    requiere: {True}
+    asegura: {res es la cantidad de pares (p, q) con 0 ≤ p ≤ m y 0 ≤ q ≤ n satisfacen que p^2 + q^2 ≤ r^2}
+ --}
+
+pitagorasAux :: Integer -> Integer -> Integer -> Integer
+pitagorasAux m n r | n==0 && (m^2 + n^2 <= r^2) = 1
+                   | n==0 && (r^2 < m^2 + n^2 ) = 0  
+                   | (m^2 + n^2 <= r^2) = 1 + pitagorasAux m (n-1) r 
+                   |  otherwise = pitagorasAux m (n-1) r 
+
+pitagoras :: Integer -> Integer -> Integer -> Integer
+pitagoras m n r | m==0 = pitagorasAux 0 n r 
+                | otherwise = pitagorasAux m n r + pitagoras (m-1) n r  
