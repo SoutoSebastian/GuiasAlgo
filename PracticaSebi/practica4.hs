@@ -269,3 +269,54 @@ mayorDigitoParAux n y | n == 0 = y
 mayorDigitoPar :: Integer -> Integer
 mayorDigitoPar n = mayorDigitoParAux n (-1)
 
+------------EJ 19------------
+{--
+problema esSumaInicialDePrimos (n: Z) : B {
+requiere: { n ≥ 0 }
+asegura: { resultado = true ↔ n es igual a la suma de los m primeros n´umeros primos, para alg´un m.}
+}
+
+--}
+
+sumaDePrimosHasta :: Integer -> Integer 
+sumaDePrimosHasta x | x == 2 = 2 
+                    | esPrimo x == True = x + sumaDePrimosHasta (x-1)
+                    | otherwise = sumaDePrimosHasta (x-1)
+
+
+esSumaInicialDePrimosAux :: Integer -> Integer -> Bool
+esSumaInicialDePrimosAux n m | n == sumaDePrimosHasta m = True
+                             | n > m = False
+                             | otherwise = esSumaInicialDePrimosAux n (m-1)
+
+esSumaInicialDePrimos :: Integer -> Bool
+esSumaInicialDePrimos n = esSumaInicialDePrimosAux n 461 --lo hago hasta 461, mas adelante comienza a trabarse
+                                                         -- sumaDePrimosHasta 461 = 18650
+
+------------EJ 20----------
+
+{--
+problema tomaValorMax (n1:Z, n2:Z) : Z {
+    requiere: {n1>1 y n2>n1}
+    asegura: {res es algun m tal que sumaDivisores(m) = max{sumaDivisores(i) | n1 ≤ i ≤ n2}
+}
+--}
+
+sumaDivisoresAux :: Integer -> Integer -> Integer
+sumaDivisoresAux n m | m == 1 = 1
+                     | n `mod` m == 0 = m + sumaDivisoresAux n (m-1)
+                     | otherwise = sumaDivisoresAux n (m-1)
+
+sumaDivisores :: Integer -> Integer 
+sumaDivisores n = sumaDivisoresAux n n
+
+tomaValorMaxAux :: Integer -> Integer -> Integer -> Integer -> Integer
+tomaValorMaxAux n1 n2 m q| n2 < q = m
+                         | sumaDivisores m > sumaDivisores q = tomaValorMaxAux n1 n2 m (q+1)
+                         | otherwise = tomaValorMaxAux n1 n2 q (q+1)
+
+tomaValorMax :: Integer-> Integer -> Integer
+tomaValorMax n1 n2 = tomaValorMaxAux n1 n2 n1 (n1+1)
+ 
+ ---------EJ 21----------
+ 
