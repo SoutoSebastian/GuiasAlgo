@@ -191,6 +191,7 @@ multiplosDeN n (x:xs) | x `mod` n == 0 = x : multiplosDeN n xs
                     | otherwise = multiplosDeN n xs
 
 --9 
+--sin tener en cuenta repetidos
 sacaN :: Integer -> [Integer] -> [Integer]
 sacaN n [] = []
 sacaN n (x:xs) | n == x = sacaN n xs
@@ -199,3 +200,97 @@ sacaN n (x:xs) | n == x = sacaN n xs
 ordenar :: [Integer] -> [Integer]
 ordenar [y] = [y]
 ordenar (x:xs) = ordenar (sacaN (maximo (x:xs)) (x:xs)) ++ [maximo (x:xs)]
+
+---teniendo en cuenta repetidos
+sacaN2 :: Integer -> [Integer] -> [Integer]
+sacaN2 n [] = []
+sacaN2 n (x:xs) | n == x = xs
+                | otherwise = x : sacaN2 n xs
+               
+ordenar2 :: [Integer] -> [Integer]
+ordenar2 [y] = [y]
+ordenar2 (x:xs) = ordenar2 (sacaN2 (maximo (x:xs)) (x:xs)) ++ [maximo (x:xs)]
+
+---------EJ 4---------
+
+--1
+sacarBlancosRepetidos :: [Char] -> [Char]
+sacarBlancosRepetidos [' '] = [' ']
+sacarBlancosRepetidos [x] = [x]
+sacarBlancosRepetidos (x:y:xs) | x == y && x == ' ' = sacarBlancosRepetidos (x:xs)
+                               | otherwise = x : sacarBlancosRepetidos (y:xs) 
+
+--2
+
+contarPalabras :: [Char] -> Integer
+contarPalabras (x:xs) = contarEspacios (sacarEspaciosIniFin(x:xs)) + 1
+
+
+sacarEspaciosIniFin :: [Char] -> [Char]
+sacarEspaciosIniFin (x:xs) | head (sacarBlancosRepetidos(x:xs)) == ' ' && ultimo (sacarBlancosRepetidos(x:xs)) == ' ' =
+                             tail (quitarUltimo (sacarBlancosRepetidos(x:xs)))
+                           | head (sacarBlancosRepetidos(x:xs)) == ' ' =  tail (sacarBlancosRepetidos(x:xs))
+                           | ultimo (sacarBlancosRepetidos(x:xs)) == ' ' = quitarUltimo (sacarBlancosRepetidos(x:xs))
+                           | otherwise = (x:xs)
+
+quitarUltimo :: [Char] -> [Char]
+quitarUltimo [x] = []
+quitarUltimo (x:xs) = x : quitarUltimo xs
+
+contarEspacios :: [Char] -> Integer
+contarEspacios [] = 0
+contarEspacios (x:xs) | x == ' ' = 1 + contarEspacios xs
+                      | otherwise = contarEspacios xs
+
+---3 
+
+palabras :: [Char] -> [[Char]]
+palabras x = armarLista (sacarEspaciosIniFin x)
+
+armarLista :: [Char] -> [[Char]]
+armarLista [] = []
+armarLista xs = [primerPalabra xs] ++ armarLista (sacarPrefijo (primerPalabra xs) xs)
+
+
+primerPalabra :: [Char] -> [Char]
+primerPalabra [] = []
+primerPalabra (x:xs) | x /= ' ' = x : primerPalabra xs
+                     | x == ' ' = []
+
+sacarPrefijo :: [Char] -> [Char] -> [Char]
+sacarPrefijo [] [] = []
+sacarPrefijo [] (y:ys) | y == ' ' = ys
+                       |otherwise = (y:ys)
+sacarPrefijo (x:xs) (y:ys) | x == y = sacarPrefijo xs ys
+                           | y == ' ' = ys
+                           | otherwise = ys
+
+---4
+
+palabraMasLarga  :: [Char] -> [Char]
+palabraMasLarga v = compararCadenaDePalabras (primerPalabra (sacarEspaciosIniFin v)) 
+                    (sacarPrefijo (primerPalabra (sacarEspaciosIniFin v)) (sacarEspaciosIniFin v))
+
+contarCaracteres :: [Char] -> Integer
+contarCaracteres [] = 0
+contarCaracteres (x:xs) = 1 + contarCaracteres xs
+
+compararPalabras :: [Char] -> [Char] -> [Char]
+compararPalabras x s | contarCaracteres x <= contarCaracteres s = s   
+                     | otherwise = x
+
+
+compararCadenaDePalabras :: [Char] -> [Char] -> [Char]
+compararCadenaDePalabras (x:xs) [] = (x:xs)
+compararCadenaDePalabras (x:xs) (y:ys) | compararPalabras (x:xs) (primerPalabra (y:ys) ) ==  (x:xs) 
+                                         = compararCadenaDePalabras (x:xs) (sacarPrefijo (primerPalabra (y:ys)) (y:ys))
+                                       | otherwise = compararCadenaDePalabras (primerPalabra(y:ys)) (sacarPrefijo (primerPalabra (y:ys)) (y:ys))
+                                         
+test1 = palabraMasLarga "esto es boca juniors" == "juniors"
+test2 = palabraMasLarga "  me llamo sebastian" == "sebastian"
+test3 = palabraMasLarga "hola     soy estudiante" == "estudiante"
+
+---5
+aplanar :: [[Char]] -> [Char]
+aplanar [] = []
+aplanar v = head v ++ aplanar (tail v)
