@@ -1,9 +1,10 @@
 {--
 "Nombre del Test" ~: <res obtenido> ~? = <res esperado>
 --}
+{--
 import Test.HUnit
 import Simulacro
-
+--}
 {--
 main = runTestTT tests
 
@@ -46,7 +47,7 @@ incluido (x:c) l = elem x l && incluido c (quitar x l)
 sonIguales :: (Eq t) => [t] -> [t] -> Bool
 sonIguales xs ys = incluido xs ys && incluido ys xs 
 --}
-
+{--
 run = runTestTT tests
 
 tests = test ["relValida, True 3 elem" ~: (relacionesValidas [("hola","h"), ("hola","yo"), ("se","bro")])~?=True,
@@ -54,3 +55,4 @@ tests = test ["relValida, True 3 elem" ~: (relacionesValidas [("hola","h"), ("ho
               "relValida, False 1 elem" ~: (relacionesValidas [("vos" ,"vos")])~?=False,
               "relValida, False +1 elem" ~: (relacionesValidas [("yo" ,"vos"), ("boca","river"), ("vos", "yo")])~?=False,
               "relValida, False  en 2do elem" ~: (relacionesValidas [("yo" ,"vos"), ("boca","river"), ("boca", "river")])~?=False]
+              --}

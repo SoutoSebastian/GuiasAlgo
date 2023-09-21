@@ -294,3 +294,21 @@ test3 = palabraMasLarga "hola     soy estudiante" == "estudiante"
 aplanar :: [[Char]] -> [Char]
 aplanar [] = []
 aplanar v = head v ++ aplanar (tail v)
+
+---6
+aplanarConBlancos :: [[Char]] -> [Char]
+aplanarConBlancos [] = []
+aplanarConBlancos [x] = x
+aplanarConBlancos v = head v ++ " "  ++ aplanarConBlancos (tail v)
+
+---7
+
+aplanarConNBlancos :: Integer -> [[Char]] -> [Char]
+aplanarConNBlancos _ [] = []
+aplanarConNBlancos _ [x] = x
+aplanarConNBlancos n v = head v ++ insertarNBlancos n  ++ aplanarConNBlancos n (tail v)
+
+
+insertarNBlancos :: Integer -> [Char]
+insertarNBlancos n | n == 1 = " "
+                   | otherwise = " " ++ insertarNBlancos (n-1)

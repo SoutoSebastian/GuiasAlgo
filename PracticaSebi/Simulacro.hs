@@ -1,5 +1,6 @@
+{--
 module Simulacro where 
-
+--}
 fib :: Integer -> Integer
 fib 0 = 0
 fib 1 = 1
@@ -96,3 +97,50 @@ requiere: {relacionesV alidas(relaciones)}
 asegura: {resu es el Strings que aparece m´as veces en las tuplas de relaciones (o alguno de ellos si hay empate)}
 }
 --}
+
+{--
+personasConMasAmigosAux :: String -> [String] -> String
+personasConMasAmigosAux r [] = r
+personasConMasAmigosAux r [x] = r
+personasConMasAmigosAux r [x,y] = r
+personasConMasAmigosAux r (x:y:z:xs) | cantidadDeApariciones r (x:y:z:xs) > cantidadDeApariciones y (x:y:z:xs) && r /= y =
+                                       personasConMasAmigosAux r (x:z:xs)
+                                     | cantidadDeApariciones r (x:y:z:xs) <= cantidadDeApariciones y (x:y:z:xs) && r/=y  =
+                                       personasConMasAmigosAux y (y:z:xs)
+                                     | r == y && cantidadDeApariciones r (x:y:z:xs) > cantidadDeApariciones z (x:y:z:xs) =
+                                       personasConMasAmigosAux r (x:y:xs)
+                                     | otherwise = personasConMasAmigosAux z (z:xs)
+
+
+personaConMasAmigos :: [(String,String)] -> String
+personaConMasAmigos v = personasConMasAmigosAux (head (personasConRep v)) (personasConRep v)
+--}                                    
+
+testextra = personaConMasAmigos [("boca","boca"),("boca","cai"),("cai","yo")] == "boca"
+testextra2 = personaConMasAmigos [("boca","boca"),("cai","cai")] == "cai"
+testextra3 = personaConMasAmigos [("cai","cai"),("boca","yo"),("boca","boca")] == "boca"
+test10 = personaConMasAmigos [("boca","boca"),("river","yo")] == "boca"
+test42 = personaConMasAmigos [("boca","river"),("jua","boca")] == "boca"
+test43 = personaConMasAmigos [("yo" ,"vos"), ("boca","river"), ("boca", "river")] == "river" 
+test44 = personaConMasAmigos [("yo" ,"vos"), ("boca","river"), ("boca" ,"casla"), ("cai" ,"u"), ("cai","b"),("cai","c")] == "cai"
+test45 = personaConMasAmigos [("boca","river")] == "river"
+test46 = personaConMasAmigos [("yo","vos"),("boca","river"),("juan","pedro"),("julian","boca")] == "boca"
+test47 = personaConMasAmigos [("boca" ,"vos"), ("boca","river"), ("boca" ,"casla"), ("cai" ,"u"), ("cai","b"),("cai","c")] == "cai"
+test48 = personaConMasAmigos [("boca","river"),("boca","racing"),("boca","cai"),("cai","river")] == "boca"
+test49 = personaConMasAmigos [("boca","river"),("boca","racing"),("boca","cai"),("cai","river")] == "boca"
+test510 = personaConMasAmigos [("boca","river"),("boca","racing"),("boca","cai"),("cai","river"),("cai","cai"),("cai","cai")] == "cai"
+
+-----------
+cantidadDeApariciones :: String -> [String] -> Integer
+cantidadDeApariciones _ [] = 0
+cantidadDeApariciones x (y:xs) | x == y = 1 + cantidadDeApariciones x xs
+                               | otherwise = cantidadDeApariciones x xs
+
+personaConMasAmigos1 :: [String] -> [String] -> String
+personaConMasAmigos1 [x] _ = x
+personaConMasAmigos1 (p1:p2:ps) (x:y:xs) | cantidadDeApariciones p1 (x:y:xs) > cantidadDeApariciones p2 (x:y:xs) =
+                                           personaConMasAmigos1 (p1:ps) (x:y:xs)
+                                         | otherwise = personaConMasAmigos1 (p2:ps) (x:y:xs)
+
+personaConMasAmigos :: [(String,String)] -> String
+personaConMasAmigos w = personaConMasAmigos1 (personas w) (personasConRep w)
