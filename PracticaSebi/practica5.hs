@@ -312,3 +312,106 @@ aplanarConNBlancos n v = head v ++ insertarNBlancos n  ++ aplanarConNBlancos n (
 insertarNBlancos :: Integer -> [Char]
 insertarNBlancos n | n == 1 = " "
                    | otherwise = " " ++ insertarNBlancos (n-1)
+
+-----
+
+pertenecex :: Integer -> [Integer] -> Bool
+pertenecex _ [] = False
+pertenecex n (x:xs) | n == x = True
+                   | otherwise = pertenecex n xs
+
+
+contenidox :: [Integer] -> [Integer] -> Bool
+contenidox [] _ = True
+contenidox _ [] = False
+contenidox (x:xs) (y:ys) = pertenecex x (y:ys) && contenidox xs (y:ys)
+
+mismosElem :: [Integer] -> [Integer] -> Bool
+mismosElem x v = contenidox x v && contenidox v x
+
+sacarPalabra :: String -> [String] -> [String]
+sacarPalabra _ [] = []
+sacarPalabra v (x:xs) | v == x = sacarPalabra v xs
+                      | otherwise = x : sacarPalabra v xs
+
+sacarPalabrasRep :: [String] -> [String]
+sacarPalabrasRep [] = []
+sacarPalabrasRep [x,y] | x == y =[x]
+                       | otherwise = [x,y]
+sacarPalabrasRep (x:y:xs) = x : sacarPalabrasRep (sacarPalabra x (x:y:xs))
+
+------EJ 5
+
+--a
+
+sumaAcumulada :: (Num t) => [t] -> [t] 
+sumaAcumulada [] = []
+sumaAcumulada v = sumaAcumulada (sacarUltimoElemento v) ++ [sumaDeTodos v]
+
+--al pedo--
+sumaAcumuladaHasta :: (Num t,Eq t) => t -> [t] -> t
+sumaAcumuladaHasta n [] = 0
+sumaAcumuladaHasta n (x:xs) | n == x = n
+                            | otherwise = x + sumaAcumuladaHasta n xs
+-----------
+
+sumaDeTodos :: (Num t) => [t] -> t 
+sumaDeTodos [] = 0
+sumaDeTodos (x:xs) = x + sumaDeTodos xs
+
+sacarUltimoElemento :: (Num t) => [t] -> [t]
+sacarUltimoElemento [x] = []
+sacarUltimoElemento (x:xs) = x : sacarUltimoElemento xs
+
+--b
+
+descomponerEnPrimos :: [Integer] -> [[Integer]]
+descomponerEnPrimos [] = []
+descomponerEnPrimos (x:xs) = descomponerEnPrimosIndi x : descomponerEnPrimos xs
+
+
+esPrimoAux :: Integer -> Integer -> Bool
+esPrimoAux 1 _ = False
+esPrimoAux _ 1 = True
+esPrimoAux n i | n `mod` i /= 0 = esPrimoAux n (i-1)
+               | otherwise = False
+
+esPrimo :: Integer -> Bool
+esPrimo n = esPrimoAux n (n-1)
+
+
+descomponerEnPrimosIndiAux :: Integer -> Integer -> [Integer]
+descomponerEnPrimosIndiAux _ 1 = []
+descomponerEnPrimosIndiAux i n | esPrimo i && n `mod` i == 0 = i : descomponerEnPrimosIndiAux (i) (n `div` i)
+                               | otherwise = descomponerEnPrimosIndiAux (i+1) n
+
+descomponerEnPrimosIndi :: Integer -> [Integer]
+descomponerEnPrimosIndi n = descomponerEnPrimosIndiAux 2 n
+
+-------palabras
+
+palabrasx :: [Char] -> [[Char]]
+palabrasx [] = []
+palabrasx v = primerPalabrax (sacarEspaciosIniFin v) : palabrasx (sacarPrefijox (primerPalabrax (sacarEspaciosIniFin v)) (sacarEspaciosIniFin v))
+
+
+primerPalabrax :: [Char] -> [Char]
+primerPalabrax [] = []
+primerPalabrax (x:xs) | x == ' ' = []
+                      | otherwise = x : primerPalabrax xs
+  
+sacarPrefijox :: [Char] -> [Char] -> [Char]
+sacarPrefijox (x:xs) (y:ys) | x == y = sacarPrefijox xs ys
+                            | otherwise = (y:ys)
+sacarPrefijox [] (y:ys) | y == ' ' = ys
+                        | otherwise = (y:ys)
+sacarPrefijox [] [] = []
+
+-------palabraMasLarga
+palabraMasLargax :: [Char] -> [Char]
+palabraMasLargax v = elementoMasLargo (palabrasx v)
+
+elementoMasLargo :: [[Char]] -> [Char]
+elementoMasLargo [x] = x
+elementoMasLargo (x:y:xs) | length x > length y = elementoMasLargo (x:xs)
+                          | otherwise = elementoMasLargo (y:xs)
