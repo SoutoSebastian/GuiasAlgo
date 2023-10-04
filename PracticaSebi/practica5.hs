@@ -415,3 +415,39 @@ elementoMasLargo :: [[Char]] -> [Char]
 elementoMasLargo [x] = x
 elementoMasLargo (x:y:xs) | length x > length y = elementoMasLargo (x:xs)
                           | otherwise = elementoMasLargo (y:xs)
+
+
+----------------
+sacarBlancosRepetidosx :: [Char] -> [Char]
+sacarBlancosRepetidosx [x] = [x]
+sacarBlancosRepetidosx (x:y:xs) | x == y && x == ' ' = sacarBlancosRepetidosx (x:xs)
+                                | otherwise = x : sacarBlancosRepetidosx (y:xs)
+----------------
+
+contarPalabrasx :: [Char] -> Integer
+contarPalabrasx v = contarEspaciosx v + 1
+
+
+ultimoElem :: [Char] -> Char
+ultimoElem [x] = x
+ultimoElem (x:xs) = ultimoElem xs
+
+sacarUltimo :: [Char] -> [Char]
+sacarUltimo [] = []
+sacarUltimo [x] = []
+sacarUltimo (x:xs) = x : sacarUltimo xs
+
+sacarEspaciosIniFinx :: [Char] -> [Char]
+sacarEspaciosIniFinx [] = []
+sacarEspaciosIniFinx (x:xs) | x == ' ' && ultimoElem (x:xs) == ' ' = sacarEspaciosIniFinx (sacarUltimo xs)
+                            | x == ' ' = sacarEspaciosIniFinx xs
+                            | ultimoElem (x:xs) == ' ' = sacarEspaciosIniFinx (sacarUltimo (x:xs))
+                            | otherwise = (x:xs)
+
+contarEspaciosx :: [Char] -> Integer
+contarEspaciosx [] = 0
+contarEspaciosx (x:xs) | x == ' ' = 1 + contarEspaciosx xs
+                       | otherwise = contarEspaciosx xs
+
+
+                       
