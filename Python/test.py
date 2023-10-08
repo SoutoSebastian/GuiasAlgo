@@ -259,21 +259,21 @@ def aristoteles_viaje (a:int):
 def al_10for ():
     for i in range (1,11,1):
         print(i)
-        i = i + 1
+#        i = i + 1
     
 
 #2
 def hasta_40for():
     for i in range (10,41,2):
         print(i)
-        i=i+1
+#        i=i+1
 
 
 #3
 def eco_for():
     for i in range (1,11,1):
         print("eco")
-        i = i + 1
+ #       i = i + 1
 
 
 #4 
