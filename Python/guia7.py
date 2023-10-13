@@ -1,4 +1,5 @@
 import numpy as np 
+import random 
 
 #####EJ 1 
 
@@ -293,3 +294,289 @@ def pospares2 (s: [int])->[int]:
 ###3
 #Dada una cadena de caracteres devuelva una cadena igual a la anterior, pero sin las vocales. No se agregan espacios,
 #sino que borra la vocal y concatena a continuaci´on
+
+def sacarVocales (s: str)->str:
+    vocales: list = ["A","E","I","O","U","a","e","i","o","u"]
+    res: str = ""
+    for i in range (len(s)):
+        if (pertenecestr(vocales, s[i])):
+                res = res
+        else:
+                res = res + s[i]
+    return res
+
+
+def pertenecestr(s:list, e: str)->bool:
+    res: bool = False
+    for i in range(len(s)):
+        if(s[i]==e):
+            res: bool = True
+    return res
+
+# print(sacarVocales("hola"))
+# print(sacarVocales("sebastian"))
+# print(pertenecestr(["A","E","I","O","U","a","e","i","o","u"],"H"))
+
+
+###4
+"""
+4. problema reemplazaVocales (in s:seq<Char>) : seq<Char> {
+requiere: { T rue }
+asegura: {Para todo i ∈ Z, si 0 ≤ i < |res| → (pertenece(<"a","e","i","o","u">, s[i]) ∧ res[i] = " ") o
+(¬ pertenece(<"a","e","i","o","u">, s[i]) ∧ res[i] = s[i] ) ) }
+}
+"""
+
+def reemplazaVocales(s:[str])->[str]:
+    vocales: list = ["A","E","I","O","U","a","e","i","o","u"]
+    res: str = ""
+    for i in range (len(s)):
+        if (pertenecestr(vocales, s[i])):
+                res = res + " "
+        else:
+                res = res + s[i]
+    return res
+
+# print(reemplazaVocales("hola"))
+# print(reemplazaVocales("riquelme"))
+
+
+###5
+"""
+problema daVueltaStr (in s:seq<Char>) : seq<Char> {
+requiere: { T rue }
+asegura: { Para todo i ∈ Z si 0 ≤ i < |res| → res[i] = s[|s| - i - 1]}
+}
+"""
+
+def daVueltaStr(s:[str])->[str]:
+    res: str = ""
+    for i in range(len(s)):
+        res = res + s[len(s)-i-1] 
+    return res
+
+# print(daVueltaStr("hola"))
+# print(daVueltaStr("libertadores"))
+
+
+###6
+"""
+problema eliminarRepetidos (in s:seq<Char>) : seq<Char> {
+requiere: { T rue }
+asegura: {(|res| ≤ |s|) ∧ (para todo i ∈ Z si 0 ≤ i < |s| → pertenece(s[i], res)) ∧ (para todo i, j ∈ Z si
+(0 ≤ i, j < |res| ∧ i 6= j) → res[i] 6= res[j])}
+}
+"""
+
+def eliminarRepetidos(s:[str])->[str]:
+    res= ""
+    for i in range(len(s)):
+        if(pertenece(res,s[i])):
+            res = res
+        else:
+            res = res + s[i]
+    return res
+
+# print(eliminarRepetidos("sebastian"))
+# print(eliminarRepetidos("aeiouaeiou"))
+
+##############EJ 3
+
+def aprobado(notas:[int])->int:
+    res:int=0
+    if (todosMayoresA4(notas) and promedio(notas)>=7):
+        res=1
+    elif (todosMayoresA4(notas) and 4<=promedio(notas)<7):
+        res = 2
+    else:
+        res = 3
+    return res
+
+
+
+def todosMayoresA4 (notas: [int])->bool:
+    res: bool = True
+    for i in range(len(notas)):
+        if (notas[i]<4):
+            res = False
+    return res
+
+
+def promedio (notas:[int])->float:
+    res = 0
+    for i in range(len(notas)):
+        res = res + notas[i]
+    res = res / (len(notas))
+    return res
+
+# print(todosMayoresA4([4,5,6,7,8,9]))
+# print(todosMayoresA4([4,5,6,1,8,9]))
+# print(promedio([8,10,10,9,9,8]))
+# print(aprobado([8,9,10,7,5]))
+
+
+#################EJ 4
+
+###1
+def alumnos()->[str]:
+    res: [str]= []
+    nombre: str = (input("Nombre:"))
+    while (nombre != "listo"): 
+        res.append(nombre)
+        nombre =str(input("Nombre:"))
+    return res
+
+
+###2
+
+def sube()->[tuple]:
+    res:[tuple] = []
+    movimiento: str = input("Que quiere hacer?")
+    while (movimiento != "X"):
+        if (movimiento == "C"):
+            monto: int = input("Ingresar monto")
+            res.append(("C",monto))
+            movimiento: str = input("Que quiere hacer?")
+        else:
+            monto: int = input("Ingresar monto")
+            res.append(("D",monto))
+            movimiento: str = input("Que quiere hacer?")
+    return res
+
+
+###3
+
+def sumaDelJuego(x:float, y:float)->float:
+    res: int = x
+    if (y>=10):
+        res = res + 0.5
+    else:
+        res = res + y
+    return res
+        
+
+
+def sieteYmedio()->[int]:
+    
+    contador: int = 0
+    numeros: [int] = [1,2,3,4,5,6,7,10,11,12]
+    primerCarta: int = random.choice(numeros)
+    print("Tu carta es", str(primerCarta))
+    res: [int] = [primerCarta]
+    contador = sumaDelJuego(0,primerCarta)
+    print("Y vas",str(contador))
+    siguientePaso: str = input("Que vas a hacer?")
+                               
+    while (siguientePaso == "sigo" and contador<7.5):
+        otraCarta: int = random.choice(numeros)
+        print("Tu carta es", str(otraCarta))
+        res.append(int(otraCarta))
+        contador = sumaDelJuego(contador,otraCarta)
+        if (contador < 7.5):
+            print("Y vas",str(contador))
+            siguientePaso: str = input("Que vas a hacer?")
+    
+    if(contador == 7.5):
+        print("GANASTE!")
+    elif(contador<7.5):
+        print("CORTO")
+    else:
+        print("PERDISTE!!")
+    return res
+
+
+#################EJ 5
+
+###1 
+"""
+problema perteneceACadaUno (in s:seq<seq<Z>>, in e:Z, out res: seq<Bool>) {
+requiere: { True }
+asegura: { Para todo i ∈ Z si 0 ≤ i < |res| → (res[i] = true ↔ pertenece(s[i], e))}
+}
+"""
+
+def perteneceACadaUno (s:[[int]], e: int, res:[bool]):
+    res = []
+    for i in range (len(s)):
+        res.append(pertenece(s[i],e))
+    print(res)
+   
+
+###2
+"""
+problema esMatriz (in s:seq<seq<Z>>) : Bool {
+requiere: { T rue }
+asegura: { res = true ↔ (|s| > 0) ∧ (|s[0]| > 0) ∧ (Para todo i ∈ Z si 0 ≤ i < |s| → |s[i]| = |s[0]|)}
+}
+
+"""
+
+def esMatriz (s:[[int]])->bool:
+    res: bool = True
+    if (len(s) == 0 or len(s[0]) == 0):
+        res = False
+    for i in range(len(s)):
+        if (len(s[0]) != len(s[i])):
+            res = False
+    return res
+
+# print(esMatriz([[1,2,3],[2,2,2]]))
+# print(esMatriz([[1,2,3,4],[2,2,2]]))
+# print(esMatriz([[],[2,2,2]]))
+
+###3
+
+"""
+3. problema filasOrdenadas (in m:seq<seq<Z>>, out res: seq<Bool>) {
+requiere: { es Matriz(m)}
+asegura: { Para todo i ∈ Z si 0 ≤ i < |res| → (res[i] = true ↔ ordenados(s[i])) }
+}
+"""                      
+
+def filasOrdenadas(m:[[int]], res:[bool]):
+    res = []
+    for i in range (len(m)):
+        if (ordenados(m[i])):
+            res.append(True)
+        else:
+            res.append(False)
+    print(res)
+
+# filasOrdenadas([[1,2,3],[4,5,6]],[True,False])
+# filasOrdenadas([[1,2,3],[4,1,6]],[True,False])
+
+
+###4
+
+def elevarMatrices (d: int, p:int)->[[float]]:
+    m = np.random.random((d, d))**2
+    if (p == 0):
+        res: [[int]] = np.identity(d)
+    else:
+        res: [[int]] = m
+        for i in range (1,p+1):
+            if (p == 1):
+                res = res
+            else:
+                res: [[int]] = multiplicacionDeMatrices(res,m)
+    return res
+
+
+
+
+def multiplicacionDeMatrices (a:[[int]], b:[[int]]):
+    res: [[int]] = np.random.random((len(b[0]),len(a)))
+    for i in range (len(a)):
+        for k in range (len(b)):
+            valor = 0
+            for j in range (len(a[i])):
+                valor = valor + a[i][j] * b[j][k]
+                res[i][k] = valor
+    return res
+
+
+    
+    
+
+print(elevarMatrices(2,2))
+print(multiplicacionDeMatrices([[5,2,1],[2,1,2],[4,1,3]],[[1,4,2],[0,3,0],[2,1,3]]))
